@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rotundra</title>
+<meta name="description" content="Rotundra. An interface layer for systems of record. Germann Inc.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#100C0A;
+    --shell:#1A1411;
+    --cream:#EFE6D6;
+    --brass:#C9932F;
+    --oxblood:#6E2420;
+    --dim:rgba(239,230,214,.42);
+    --hair:rgba(239,230,214,.13);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--ground);
+    color:var(--cream);
+    font-family:'IBM Plex Mono',ui-monospace,monospace;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    position:relative;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(120% 90% at 50% 8%, rgba(201,147,47,.10), transparent 62%),
+      radial-gradient(90% 70% at 50% 100%, rgba(110,36,32,.16), transparent 70%);
+  }
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.05;
+    background-image:repeating-linear-gradient(0deg,#000 0 1px,transparent 1px 3px);
+  }
+  .wrap{
+    position:relative;z-index:1;
+    min-height:100%;
+    display:flex;flex-direction:column;
+    padding:28px 16px 24px;
+    max-width:1180px;margin:0 auto;
+  }
+  .micro{
+    font-size:10px;letter-spacing:.34em;text-transform:uppercase;
+    color:var(--dim);
+  }
+  header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+  header .micro strong{color:var(--brass);font-weight:500}
+
+  main{
+    flex:1;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;
+    padding:56px 0 40px;
+    gap:34px;
+  }
+
+  /* dial */
+  .dial{width:min(46vw,236px);height:min(46vw,236px);display:block}
+  .dial .ring{fill:none;stroke:var(--brass);stroke-opacity:.5}
+  .dial .plate{fill:var(--shell)}
+  .dial .port{fill:var(--ground);stroke:var(--brass);stroke-opacity:.72}
+  .dial .hub{fill:none;stroke:var(--brass);stroke-opacity:.9}
+  .dial .spark{fill:var(--brass)}
+  .rotor{transform-origin:120px 120px;animation:turn 68s linear infinite}
+  @keyframes turn{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion:reduce){.rotor{animation:none}}
+
+  h1{
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-weight:400;
+    font-size:clamp(3.6rem,16vw,10.5rem);
+    line-height:.86;
+    letter-spacing:.015em;
+    color:var(--cream);
+  }
+  h1 .dot{color:var(--brass)}
+
+  .lede{
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-size:clamp(1.15rem,3.1vw,1.9rem);
+    line-height:1.45;
+    font-weight:300;
+    color:rgba(239,230,214,.82);
+    max-width:37ch;
+  }
+  .lede em{font-style:italic;color:var(--brass)}
+
+  /* spec rows */
+  .spec{
+    width:100%;max-width:560px;
+    border-top:1px solid var(--hair);
+    margin-top:6px;
+  }
+  .spec div{
+    display:flex;justify-content:space-between;align-items:center;gap:18px;
+    padding:13px 2px;
+    border-bottom:1px solid var(--hair);
+    font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  }
+  .spec span:first-child{color:var(--dim)}
+  .spec span:last-child{color:var(--cream)}
+  .spec a{color:var(--brass);text-decoration:none;border-bottom:1px solid rgba(201,147,47,.35)}
+  .spec a:hover{border-bottom-color:var(--brass)}
+
+  footer{
+    display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+    padding-top:18px;border-top:1px solid var(--hair);
+  }
+
+  @media (max-width:620px){
+    main{padding:34px 0 28px;gap:26px}
+    header{gap:8px}
+    .micro{font-size:9px;letter-spacing:.28em}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="micro"><strong>Rotundra</strong> &middot; Protocol</p>
+    <p class="micro">Germann Inc</p>
+  </header>
+
+  <main>
+
+    <svg class="dial" viewBox="0 0 240 240" role="img" aria-label="Rotary dial mark">
+      <circle class="plate" cx="120" cy="120" r="108"/>
+      <circle class="ring" cx="120" cy="120" r="108" stroke-width="1"/>
+      <circle class="ring" cx="120" cy="120" r="97" stroke-width=".5"/>
+      <g class="rotor">
+        <g class="port" stroke-width="1">
+          <circle cx="120" cy="38" r="9.5"/>
+          <circle cx="168" cy="53.4" r="9.5"/>
+          <circle cx="197.7" cy="94.2" r="9.5"/>
+          <circle cx="197.7" cy="145.8" r="9.5"/>
+          <circle cx="168" cy="186.6" r="9.5"/>
+          <circle cx="120" cy="202" r="9.5"/>
+          <circle cx="72" cy="186.6" r="9.5"/>
+          <circle cx="42.3" cy="145.8" r="9.5"/>
+          <circle cx="42.3" cy="94.2" r="9.5"/>
+          <circle cx="72" cy="53.4" r="9.5"/>
+        </g>
+        <circle class="spark" cx="120" cy="38" r="3"/>
+      </g>
+      <circle class="hub" cx="120" cy="120" r="30" stroke-width="1"/>
+      <circle class="hub" cx="120" cy="120" r="21" stroke-width=".5"/>
+      <circle class="spark" cx="120" cy="120" r="3.4"/>
+    </svg>
+
+    <h1>Rotundra<span class="dot">.</span></h1>
+
+    <p class="lede">
+      Before menus, you picked up the phone and said where you wanted to go.
+      Someone <em>connected you</em>.
+    </p>
+
+    <div class="spec">
+      <div><span>Status</span><span>In development</span></div>
+      <div><span>Owner</span><span>Germann Inc</span></div>
+      <div><span>Enquiries</span><span><a href="mailto:dgermann@main.inc">dgermann@main.inc</a></span></div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p class="micro">rotundra.io</p>
+    <p class="micro">&copy; 2026 Germann Inc</p>
+  </footer>
+
+</div>
+</body>
+</html>
