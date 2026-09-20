@@ -72,7 +72,15 @@ a{color:inherit;text-decoration:none}
 #intro.gone{opacity:0;visibility:hidden;transition:opacity .16s linear .26s,visibility 0s .42s}
 
 /* ---------------- PAGE ---------------- */
-#page{opacity:0}
+#glow{
+  position:fixed; left:50%; top:-42vh; width:130vw; max-width:1600px; aspect-ratio:1/1;
+  transform:translateX(-50%); pointer-events:none; z-index:0;
+  background:
+    radial-gradient(circle, rgba(124,124,248,.16) 0%, rgba(124,124,248,.07) 30%, rgba(8,8,10,0) 58%),
+    radial-gradient(circle, rgba(236,72,153,.05) 0%, rgba(8,8,10,0) 46%);
+  filter:blur(26px);
+}
+#page{opacity:0; position:relative; z-index:1}
 #page.on{animation:pageIn .5s cubic-bezier(.2,.7,.3,1) forwards}
 @keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
@@ -165,6 +173,7 @@ footer a:hover{color:var(--ink-2)}
 </div>
 
 <!-- ============ PAGE ============ -->
+<div id="glow"></div>
 <div id="page">
 <div class="wrap">
 
@@ -254,13 +263,6 @@ footer a:hover{color:var(--ink-2)}
   var done  = false;
   var BOLT_AT = 5.4;   // seconds into the clip where it snaps to the page
 
-  function seen(){
-    try { return sessionStorage.getItem('rtd_intro') === '1'; } catch(e){ return false; }
-  }
-  function markSeen(){
-    try { sessionStorage.setItem('rtd_intro','1'); } catch(e){}
-  }
-
   function reveal(){
     page.classList.add('on');
   }
@@ -268,20 +270,12 @@ footer a:hover{color:var(--ink-2)}
   function bolt(){
     if (done) return;
     done = true;
-    markSeen();
     document.body.classList.add('bolt');
     setTimeout(reveal, 200);
     setTimeout(function(){
       intro.classList.add('gone');
       try { vid.pause(); } catch(e){}
     }, 300);
-  }
-
-  // straight to the page on a repeat view in this tab
-  if (seen()){
-    intro.parentNode.removeChild(intro);
-    reveal();
-    return;
   }
 
   vid.addEventListener('timeupdate', function(){
