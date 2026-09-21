@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0a0910">
+<meta name="robots" content="noindex, nofollow">
+<title>Rotundra Flags</title>
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#0a0910;--bg2:#110f1a;--line:#221e30;--ink:#ece9f3;--ink2:#a39fb3;--ink3:#5e5970;--acc:#8b5cf6;--acc2:#c4b5fd;--ok:#4ade80;--warn:#fbbf24}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{margin:0;color:var(--ink);font-family:Poppins,system-ui,sans-serif;padding:0 clamp(16px,4vw,56px) 80px}
+.cap{font-size:10px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;color:var(--ink3)}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+button,input,select{font-family:inherit;color-scheme:dark}
+nav{display:flex;gap:22px;align-items:center;padding:26px 0 0}
+nav a{color:var(--ink3);text-decoration:none;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:600}
+nav a.on{color:var(--ink)}
+nav b{font-weight:700;font-size:18px;color:var(--ink);text-transform:none;margin-right:10px}
+nav b i{font-style:normal;color:var(--acc)}
+header{padding:34px 0 26px;border-bottom:1px solid var(--line);display:grid;gap:18px}
+h1{margin:0;font-size:clamp(40px,7vw,96px);font-weight:700;letter-spacing:-.035em;line-height:.95}
+h1 em{font-style:normal;color:var(--acc)}
+.keyrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.keyrow input{background:var(--bg2);border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:10px 12px;font-size:13px;width:min(380px,100%);outline:0}
+.badge{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,.05);color:var(--ink2)}
+.badge.ok{background:rgba(74,222,128,.12);color:var(--ok)}.badge.warn{background:rgba(251,191,36,.12);color:var(--warn)}
+main{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:clamp(24px,4vw,56px);padding-top:34px}
+@media (max-width:900px){main{grid-template-columns:1fr}}
+.row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.row:hover .k{color:var(--acc2)}
+.sw{width:44px;height:24px;border-radius:12px;border:1px solid var(--line);background:var(--bg2);position:relative;transition:background .2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--ink3);transition:transform .2s,background .2s}
+.sw.on{background:rgba(139,92,246,.35);border-color:var(--acc)}.sw.on::after{transform:translateX(20px);background:var(--acc2)}
+.sw.none{border-style:dashed}.sw.none::after{background:var(--ink2);transform:translateX(20px)}
+.k{font-size:14px;font-weight:600}.k small{display:block;font-size:11px;color:var(--ink3);font-weight:400;margin-top:2px}
+.sc{font-size:11px;color:var(--ink2);text-align:right;line-height:1.5}
+.sc b{color:var(--acc2);font-weight:500}
+.card{border:1px solid var(--line);border-radius:18px;background:var(--bg2);padding:20px;display:none}
+.card.on{display:block}
+.card h3{margin:4px 0 14px;font-size:24px;letter-spacing:-.02em}
+.f{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.f input{background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:10px 12px;font-size:13px;outline:0}
+.f input[type=range]{padding:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:11px;padding:5px 9px;border-radius:7px;border:1px solid var(--line);color:var(--ink2);cursor:pointer;background:transparent}
+.chip.on{border-color:var(--acc);color:var(--acc2);background:rgba(139,92,246,.12)}
+.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:600;font-size:13px;cursor:pointer;background:var(--acc);color:#0a0910}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.acts{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.muted{color:var(--ink3);font-size:12px}
+.audit{margin-top:34px}
+.au{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:12px;color:var(--ink2)}
+.au b{color:var(--ink);font-weight:500}
+.preview{margin-top:34px;border-top:1px solid var(--line);padding-top:18px}
+.preview .f{flex-direction:row;gap:8px;flex-wrap:wrap;align-items:center}
+.preview input{width:180px}
+.res{font-size:13px;line-height:1.7;margin-top:10px}
+.res b{color:var(--acc2);font-weight:500}
+</style>
+</head>
+<body>
+<nav><b>rot<i>u</i>ndra lab</b><a href="/lab.html">Theme</a><a href="/intake.html">Intake</a><a class="on" href="/flags.html">Flags</a></nav>
+
+<header>
+  <span class="cap">feature flags · live in 30 seconds · no deploy</span>
+  <h1>Who sees what.<br><em>Flip it here.</em></h1>
+  <div class="keyrow"><input id="key" type="text" autocomplete="off" spellcheck="false" placeholder="paste a map key (rtd_test_…)"><span id="kb" class="badge">no key</span></div>
+</header>
+
+<main>
+  <section>
+    <span class="cap">screens</span>
+    <div id="screens"><div class="muted" style="padding:14px 0">paste a key</div></div>
+    <span class="cap" style="display:block;margin-top:34px">adapters</span>
+    <div id="adapters"></div>
+    <div class="audit"><span class="cap">last changes</span><div id="audit"></div></div>
+  </section>
+
+  <section>
+    <div class="card" id="card">
+      <span class="cap" id="cKey"></span>
+      <h3 id="cTitle"></h3>
+      <div class="f"><span class="cap">on / off</span><div class="chips"><button class="chip" data-en="1">On</button><button class="chip" data-en="0">Off</button></div></div>
+      <div class="f"><span class="cap">branches (empty = all)</span><div class="chips" id="cBranches"></div></div>
+      <div class="f"><span class="cap">roles (comma separated, empty = all)</span><input id="cRoles" placeholder="purchasing, sales"></div>
+      <div class="f"><span class="cap">users (user refs, comma separated, empty = all)</span><input id="cUsers" placeholder="u-123, u-456"></div>
+      <div class="f"><span class="cap">rollout <b id="cPct" class="mono">100%</b></span><input id="cRoll" type="range" min="0" max="100" step="5" value="100"></div>
+      <div class="f"><span class="cap">note</span><input id="cNote" placeholder="Order Desk pilot: one branch first"></div>
+      <div class="acts"><button class="btn" id="save">Save</button><button class="btn ghost" id="remove">Remove flag (back to on for everyone)</button><span class="muted" id="cSt"></span></div>
+    </div>
+
+    <div class="preview">
+      <span class="cap">preview · what would this person see</span>
+      <div class="f" style="margin-top:10px"><input id="pRoles" placeholder="roles: sales"><input id="pBranch" placeholder="branch: 20-CH"><input id="pUser" placeholder="user ref"><button class="btn ghost" id="pGo">Preview</button></div>
+      <div class="res" id="pRes"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+const FN='https://ozwyadgdiuwfzjsgqfju.supabase.co/functions/v1/rotundra-flags';
+const $=s=>document.querySelector(s);const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let KEY=null,DATA=null,cur=null;
+async function call(method,body){const r=await fetch(FN,{method,headers:{authorization:'Bearer '+KEY,'content-type':'application/json'},body:body?JSON.stringify(body):undefined});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||('http '+r.status));return j;}
+function setKey(raw){const m=String(raw||'').match(/rtd_(test|live)_[^\s"',;|]+/);if(!m){$('#kb').className='badge warn';$('#kb').textContent='no rtd_ key in that';return}KEY=m[0];try{localStorage.setItem('rtd_map_key',KEY)}catch(e){}$('#key').value='';$('#key').placeholder=KEY.slice(0,14)+'•••••••• (saved)';load();}
+$('#key').addEventListener('paste',()=>setTimeout(()=>setKey($('#key').value),0));
+$('#key').addEventListener('keydown',e=>{if(e.key==='Enter')setKey($('#key').value)});
+const flagFor=k=>DATA.flags.find(f=>f.key===k);
+function rowHtml(kind,id,sub){const f=flagFor(kind+':'+id);const st=!f?'none':(f.enabled?'on':'');
+  const rules=f?[f.allowed_branches?.length?'branches '+f.allowed_branches.join(', '):'',f.allowed_roles?.length?'roles '+f.allowed_roles.join(', '):'',f.allowed_users?.length?f.allowed_users.length+' users':'',f.rollout_percent<100?'<b>'+f.rollout_percent+'%</b> rollout':''].filter(Boolean).join(' · '):'no flag · on for everyone';
+  return `<div class="row" data-k="${kind}:${id}"><span class="sw ${st}"></span><span class="k">${esc(id)}<small>${esc(sub)}</small></span><span class="sc">${f?(f.enabled?'<b>on</b>':'off'):''}${f?' · ':''}${rules}</span></div>`;}
+async function load(){$('#kb').className='badge';$('#kb').textContent='loading…';
+  try{DATA=await call('GET');$('#kb').className='badge ok';$('#kb').textContent='✓ '+(DATA.workspace?.name||'workspace')+' · '+DATA.workspace?.plan;
+    $('#screens').innerHTML=DATA.screens.map(s=>rowHtml('layer',s.id,(s.nav?.group?s.nav.group+' · ':'')+s.layout+' · '+s.adapter_id+(s.roles?.length?' · roles '+s.roles.join(', '):'')+(s.permissions?.length?' · perms '+s.permissions.join(', '):''))).join('')||'<div class="muted">no screens yet</div>';
+    $('#adapters').innerHTML=DATA.adapters.map(a=>rowHtml('adapter',a.id,a.kind+' · v'+a.version+' · '+(a.accepts||[]).join(', '))).join('');
+    $('#audit').innerHTML=DATA.audit.map(a=>`<div class="au"><span class="mono">${new Date(a.at).toLocaleString()}</span><span><b>${esc(a.key)}</b> ${a.before?esc(JSON.stringify(a.before)):'(new)'} → ${a.after?esc(JSON.stringify(a.after)):'(removed)'}</span><span>${esc(a.by||'')}</span></div>`).join('')||'<div class="muted">nothing yet</div>';
+    if(cur)open(cur);
+  }catch(e){$('#kb').className='badge warn';$('#kb').textContent=e.message;}}
+document.addEventListener('click',e=>{const r=e.target.closest('.row');if(r)open(r.dataset.k)});
+function open(k){cur=k;const f=flagFor(k)||{enabled:true,allowed_branches:[],allowed_roles:[],allowed_users:[],rollout_percent:100,note:''};
+  $('#card').classList.add('on');$('#cKey').textContent=k+(flagFor(k)?'':' · no flag yet');$('#cTitle').textContent=k.split(':')[1];
+  document.querySelectorAll('[data-en]').forEach(b=>b.classList.toggle('on',(b.dataset.en==='1')===!!f.enabled));
+  $('#cBranches').innerHTML=DATA.branches.map(b=>`<button class="chip ${f.allowed_branches.includes(b.id)?'on':''}" data-b="${esc(b.id)}">${esc(b.name)} <span class="mono">${esc(b.id)}</span></button>`).join('')||'<span class="muted">no branch dictionary uploaded</span>';
+  $('#cRoles').value=(f.allowed_roles||[]).join(', ');$('#cUsers').value='';$('#cUsers').placeholder=f.allowed_users?.length?f.allowed_users.length+' users set (hashed); type refs to replace':'u-123, u-456';
+  $('#cRoll').value=f.rollout_percent;$('#cPct').textContent=f.rollout_percent+'%';$('#cNote').value=f.note||'';$('#cSt').textContent='';$('#remove').style.display=flagFor(k)?'':'none';}
+document.addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;if(c.dataset.en!==undefined){document.querySelectorAll('[data-en]').forEach(b=>b.classList.toggle('on',b===c));}else c.classList.toggle('on');});
+$('#cRoll').addEventListener('input',()=>$('#cPct').textContent=$('#cRoll').value+'%');
+$('#save').addEventListener('click',async()=>{if(!cur)return;$('#cSt').textContent='saving…';
+  const body={key:cur,enabled:$('[data-en="1"]').classList.contains('on'),allowed_branches:[...document.querySelectorAll('#cBranches .chip.on')].map(c=>c.dataset.b),allowed_roles:$('#cRoles').value.split(',').map(s=>s.trim()).filter(Boolean),rollout_percent:Number($('#cRoll').value),note:$('#cNote').value,by:'flags.html'};
+  if($('#cUsers').value.trim())body.allowed_users=$('#cUsers').value.split(',').map(s=>s.trim()).filter(Boolean);
+  try{const r=await call('PUT',body);$('#cSt').textContent='saved · live in '+r.live_in;load();}catch(e){$('#cSt').textContent=e.message;}});
+$('#remove').addEventListener('click',async()=>{if(!cur)return;try{await call('DELETE',{key:cur});$('#cSt').textContent='removed';load();}catch(e){$('#cSt').textContent=e.message;}});
+$('#pGo').addEventListener('click',async()=>{$('#pRes').textContent='…';
+  try{const r=await call('POST',{preview:{roles:$('#pRoles').value.split(',').map(s=>s.trim()).filter(Boolean),branches:$('#pBranch').value.split(',').map(s=>s.trim()).filter(Boolean),user_ref:$('#pUser').value.trim()||undefined}});
+    $('#pRes').innerHTML='screens they can reach: <b>'+(r.screens.join(', ')||'none')+'</b><br>'+r.flags.map(f=>`${esc(f.key)}: <b>${f.is_on?'on':'off'}</b> (${esc(f.reason)})`).join('<br>');}
+  catch(e){$('#pRes').textContent=e.message;}});
+try{const k=localStorage.getItem('rtd_map_key');if(k&&/^rtd_/.test(k)){KEY=k;$('#key').placeholder=k.slice(0,14)+'•••••••• (saved)';load();}}catch(e){}
+</script>
+</body>
+</html>
