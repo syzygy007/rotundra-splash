@@ -85,6 +85,13 @@ summary{cursor:pointer;font-size:12px;letter-spacing:.2em;text-transform:upperca
 .cat .st.planned{color:var(--ink3)}
 .cat .h{color:var(--ink2);grid-column:3}
 .muted{color:var(--ink3);font-size:12px}
+
+.p21{margin-top:18px;border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px}
+.p21 h3{margin:0;font-size:18px;letter-spacing:-.01em}
+.p21 .q{position:relative}
+.p21 pre{margin:0;padding:12px 14px;border-radius:10px;background:var(--bg);border:1px solid var(--line);font:11.5px/1.55 var(--mono,ui-monospace,monospace);color:var(--ink2,#a39fb3);white-space:pre-wrap;max-height:180px;overflow:auto}
+.p21 .cp{position:absolute;top:30px;right:8px;font-size:11px;padding:5px 9px}
+.p21 textarea{width:100%;min-height:90px;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;font:12px var(--mono,ui-monospace,monospace);resize:vertical}
 </style>
 </head>
 <body>
@@ -126,6 +133,30 @@ summary{cursor:pointer;font-size:12px;letter-spacing:.2em;text-transform:upperca
       <div class="f full"><span class="cap">folder (SSRS only)</span><input id="folder" placeholder="Purchasing"></div>
     </div>
     <div class="row"><button class="btn" id="send" disabled>Send to the tank</button><span class="muted" id="sendst"></span></div>
+
+    <div class="p21" id="p21">
+      <span class="cap">P21 · run it on your side, only the result comes here</span>
+      <h3>Two queries. No rows leave except branch and supplier names.</h3>
+      <div class="q"><span class="cap">1 · schema (tables and columns, no data)</span>
+<pre id="qSchema">SELECT c.TABLE_NAME, c.COLUMN_NAME, c.DATA_TYPE
+FROM INFORMATION_SCHEMA.COLUMNS c
+JOIN INFORMATION_SCHEMA.TABLES t
+  ON t.TABLE_SCHEMA = c.TABLE_SCHEMA AND t.TABLE_NAME = c.TABLE_NAME
+WHERE t.TABLE_TYPE IN ('BASE TABLE', 'VIEW')
+ORDER BY c.TABLE_NAME, c.ORDINAL_POSITION;</pre><button class="btn ghost cp" data-q="qSchema">copy</button></div>
+      <div class="q"><span class="cap">2 · dictionary (branches and suppliers, ids and names only)</span>
+<pre id="qDict">SELECT 'branch' AS entity, CAST(location_id AS varchar(64)) AS id,
+       REPLACE(location_name, ',', ' ') AS name, '' AS aliases
+FROM location WHERE delete_flag = 'N'
+UNION ALL
+SELECT 'supplier', CAST(supplier_id AS varchar(64)),
+       REPLACE(supplier_name, ',', ' '), ''
+FROM supplier WHERE delete_flag = 'N'
+ORDER BY entity, name;</pre><button class="btn ghost cp" data-q="qDict">copy</button></div>
+      <span class="muted">Save each result as CSV with headers and drop it above, or paste it here. Table and column names in query 2 are standard P21; if one errors, send the error back.</span>
+      <textarea id="paste" placeholder="paste a result here (CSV with the header row)"></textarea>
+      <div class="row"><button class="btn ghost" id="usePaste">Use pasted text</button><span class="muted" id="pasteSt"></span></div>
+    </div>
 
     <div class="card" id="card">
       <span class="cap" id="cSrc"></span>
@@ -226,6 +257,14 @@ $('#apply').addEventListener('click',async()=>{ if(!current) return; $('#cSt').t
 $('#discard').addEventListener('click',async()=>{ if(!current) return; await call('POST','',{discard:current.id}); $('#card').classList.remove('on'); refresh();});
 
 try{const k=localStorage.getItem('rtd_map_key'); if(k&&/^rtd_/.test(k)){KEY=k;$('#key').placeholder=k.slice(0,14)+'•••••••• (saved)';refresh();}}catch(e){}
+// P21 helper (Patch 48): copy the two queries, or paste a result instead of a file
+document.querySelectorAll('.p21 .cp').forEach(b=>b.addEventListener('click',async()=>{const t=document.getElementById(b.dataset.q).textContent; try{await navigator.clipboard.writeText(t); b.textContent='copied'; setTimeout(()=>b.textContent='copy',1400)}catch(e){b.textContent='select + copy'}}));
+$('#usePaste').addEventListener('click',()=>{const t=$('#paste').value.trim(); if(!t){$('#pasteSt').textContent='nothing pasted';return}
+  const head=t.split(/\r?\n/)[0].toLowerCase(); let src=null;
+  if(/table_name/.test(head)&&/column_name/.test(head)) src='sql_schema'; else if(/^\s*"?entity"?\s*[,\t]\s*"?id"?/.test(head)) src='dictionary_csv';
+  const tabbed=!/,/.test(head)&&/\t/.test(head); const text=tabbed?t.split(/\r?\n/).map(l=>l.split('\t').join(',')).join('\n'):t;
+  payload={text,source:src,name:src==='sql_schema'?'p21-schema':src==='dictionary_csv'?'p21-dictionary':'pasted'}; if(src) $('#source').value=src;
+  $('#fname').textContent=payload.name+' · '+(text.length/1024).toFixed(0)+' KB · pasted'; $('#pasteSt').textContent=src?('ready as '+src+', press Send to the tank'):'could not tell what this is, pick the source above'; $('#send').disabled=!KEY;});
 </script>
 </body>
 </html>
