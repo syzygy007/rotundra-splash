@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="intro-on">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,6 +33,7 @@
 
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Rotundra","url":"https://rotundra.io/","logo":"https://rotundra.io/icon-512.png","email":"build@rotundra.io"}</script>
 
+  <link rel="preload" href="/portal-poster.jpg" as="image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -133,9 +134,43 @@
       .delivery-note { text-align:left; font-size:12px; }
     }
     @media (prefers-reduced-motion:reduce) { .cta { transition:none; } dialog[open] { animation:none; } }
+  
+    /* patch 32 · portal intro, then the page */
+    input,textarea,select,dialog { color-scheme:dark; }
+    #intro { position:fixed; inset:0; z-index:9999; background:#000; display:grid; place-items:center; transition:opacity .9s ease, transform 1.1s cubic-bezier(.2,.8,.2,1); }
+    #intro video { width:100%; height:100%; object-fit:cover; display:block; }
+    #intro.out { opacity:0; transform:scale(1.06); pointer-events:none; }
+    #intro .skip { position:absolute; right:clamp(18px,4vw,44px); bottom:clamp(18px,4vw,40px); background:none; border:0; color:#96969e; font:11px/1 var(--mono); letter-spacing:.2em; text-transform:uppercase; padding:10px; opacity:.75; }
+    #intro .skip:hover { color:#f4f4f5; opacity:1; }
+    html.intro-on body { overflow:hidden; }
+    html.intro-on .page { opacity:0; }
+    .page { transition:opacity .9s ease .15s; }
+    @media (prefers-reduced-motion:reduce) { #intro { display:none; } html.intro-on .page { opacity:1; } }
   </style>
 </head>
 <body>
+  <div id="intro" aria-hidden="true">
+    <video id="portal" src="/portal.mp4" poster="/portal-poster.jpg" muted playsinline autoplay preload="auto"></video>
+    <button class="skip" type="button" tabindex="-1">skip</button>
+  </div>
+  <script>
+    (function () {
+      var root = document.documentElement, intro = document.getElementById('intro'), v = document.getElementById('portal'), done = false;
+      function end() {
+        if (done) return; done = true;
+        intro.classList.add('out'); root.classList.remove('intro-on');
+        setTimeout(function () { intro.remove(); }, 1200);
+      }
+      if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { end(); return; }
+      v.addEventListener('timeupdate', function () { if (v.currentTime >= 5.4) end(); });
+      v.addEventListener('ended', end);
+      v.addEventListener('error', end);
+      intro.addEventListener('click', end);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') end(); }, { once: true });
+      var p = v.play && v.play(); if (p && p.catch) p.catch(end);
+      setTimeout(end, 9000);
+    })();
+  </script>
   <div class="page">
     <header>
       <span class="wordmark" aria-label="Rotundra"><span aria-hidden="true">r<span class="o"></span>tundra</span></span>
