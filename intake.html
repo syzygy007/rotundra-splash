@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0a0910">
+<meta name="robots" content="noindex, nofollow">
+<title>Rotundra Intake</title>
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+:root{color-scheme:dark;--bg:#0a0910;--bg2:#110f1a;--bg3:#16131f;--line:#221e30;--ink:#ece9f3;--ink2:#a39fb3;--ink3:#5e5970;--acc:#8b5cf6;--acc2:#c4b5fd;--ok:#4ade80;--warn:#fbbf24}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{margin:0;color:var(--ink);font-family:Poppins,system-ui,sans-serif;padding:0 clamp(16px,4vw,56px) 80px}
+.cap{font-size:10px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;color:var(--ink3)}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+button,input,select{font-family:inherit;color-scheme:dark}
+nav{display:flex;gap:22px;align-items:center;padding:26px 0 0}
+nav a{color:var(--ink3);text-decoration:none;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:600}
+nav a.on{color:var(--ink)}
+nav b{font-weight:700;letter-spacing:-.01em;font-size:18px;color:var(--ink);text-transform:none;margin-right:10px}
+nav b i{font-style:normal;color:var(--acc)}
+header{padding:34px 0 26px;border-bottom:1px solid var(--line);display:grid;gap:18px}
+h1{margin:0;font-size:clamp(40px,7vw,96px);font-weight:700;letter-spacing:-.035em;line-height:.95}
+h1 em{font-style:normal;color:var(--acc)}
+.keyrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.keyrow input{background:var(--bg2);border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:10px 12px;font-size:13px;width:min(380px,100%);outline:0}
+.keyrow input:focus{border-color:var(--acc)}
+.badge{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,.05);color:var(--ink2)}
+.badge.ok{background:rgba(74,222,128,.12);color:var(--ok)}
+.badge.warn{background:rgba(251,191,36,.12);color:var(--warn)}
+main{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);padding-top:34px}
+@media (max-width:900px){main{grid-template-columns:1fr}}
+.score{display:flex;align-items:baseline;gap:14px}
+.score .n{font-size:clamp(64px,9vw,120px);font-weight:700;letter-spacing:-.05em;line-height:.9}
+.score .n small{font-size:.4em;color:var(--ink3);letter-spacing:-.02em}
+.next{font-size:17px;line-height:1.45;color:var(--ink);max-width:48ch;margin:14px 0 24px}
+.next b{color:var(--acc2);font-weight:600}
+.items{border-top:1px solid var(--line)}
+.it{display:grid;grid-template-columns:14px 120px minmax(0,1fr);gap:4px 14px;padding:13px 0;border-bottom:1px solid var(--line);align-items:start}
+.dot{width:9px;height:9px;border-radius:50%;margin-top:6px;border:1.5px solid var(--acc)}
+.dot.ok{background:var(--ok);border-color:var(--ok)}
+.dot.warn{background:var(--warn);border-color:var(--warn)}
+.it .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--ink2);padding-top:2px}
+.it .v{font-size:13px;color:var(--ink)}
+.it .d{grid-column:3;font-size:12.5px;color:var(--acc2);line-height:1.45}
+.drop{border:1.5px dashed var(--line);border-radius:20px;padding:34px 18px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.drop.over,.drop:hover{border-color:var(--acc);background:rgba(139,92,246,.06)}
+.drop h3{margin:0 0 6px;font-size:26px;letter-spacing:-.02em}
+.drop p{margin:0;color:var(--ink2);font-size:12.5px;line-height:1.5}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.fields .full{grid-column:1/-1}
+.f{display:flex;flex-direction:column;gap:6px}
+.f input,.f select{background:var(--bg2);border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:10px 12px;font-size:13px;outline:0}
+.f input:focus,.f select:focus{border-color:var(--acc)}
+.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:600;font-size:13px;cursor:pointer;background:var(--acc);color:#0a0910}
+.btn.ghost{background:var(--bg2);color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.card{margin-top:22px;border:1px solid var(--line);border-radius:18px;background:var(--bg2);padding:20px;display:none}
+.card.on{display:block}
+.card h4{margin:6px 0 10px;font-size:22px;letter-spacing:-.02em}
+.spec{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));border-top:1px solid var(--line)}
+.spec div{padding:10px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:3px}
+.spec span{font-size:14px}
+.list{margin:12px 0 0;padding:0;list-style:none;font-size:12.5px;color:var(--ink2);display:grid;gap:6px}
+.list li b{color:var(--ink);font-weight:500}
+.find{color:var(--warn)}
+.tank{margin-top:34px}
+.tank .t{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer;align-items:center}
+.tank .t:hover{color:var(--acc2)}
+.chip{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:4px 8px;border-radius:6px;background:rgba(255,255,255,.05);color:var(--ink2)}
+.chip.applied{color:var(--ok);background:rgba(74,222,128,.1)}
+.chip.parsed,.chip.needs_review,.chip.received{color:var(--acc2);background:rgba(139,92,246,.12)}
+.chip.failed{color:var(--warn);background:rgba(251,191,36,.1)}
+details{margin-top:34px;border-top:1px solid var(--line);padding-top:16px}
+summary{cursor:pointer;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--ink2)}
+.cat{display:grid;grid-template-columns:120px 90px minmax(0,1fr);gap:4px 14px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+.cat .s{color:var(--ink)}
+.cat .st{color:var(--ok);font-size:11px}
+.cat .st.planned{color:var(--ink3)}
+.cat .h{color:var(--ink2);grid-column:3}
+.muted{color:var(--ink3);font-size:12px}
+</style>
+</head>
+<body>
+<nav><b>rot<i>u</i>ndra lab</b><a href="/lab.html">Theme</a><a class="on" href="/intake.html">Intake</a></nav>
+
+<header>
+  <span class="cap">the holding tank</span>
+  <h1>What it needs.<br><em>What it has.</em></h1>
+  <div class="keyrow">
+    <input id="key" type="text" autocomplete="off" spellcheck="false" placeholder="paste a map key (rtd_test_…)">
+    <span id="kb" class="badge">no key</span>
+  </div>
+</header>
+
+<main>
+  <section>
+    <span class="cap">readiness</span>
+    <div class="score"><div class="n" id="score">–<small>/–</small></div></div>
+    <div class="next" id="next">Paste a key to see what this workspace has and what it is missing.</div>
+    <div class="items" id="items"></div>
+    <div class="tank">
+      <span class="cap">holding tank · recent uploads</span>
+      <div id="tank" style="margin-top:8px"><div class="muted">empty</div></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="cap">send it what it needs</span>
+    <div class="drop" id="drop" style="margin-top:12px">
+      <h3>Drop a file.</h3>
+      <p>Power BI .pbit / model.bim / scanner JSON · Tableau .twb / .twbx · SSRS .rdl<br>OData $metadata · OpenAPI · Agent schema.json · routes · sitemap.xml · dictionary .csv</p>
+      <p class="mono" id="fname" style="margin-top:10px;color:var(--acc2)"></p>
+      <input id="file" type="file" hidden accept=".pbit,.bim,.json,.twb,.twbx,.rdl,.xml,.edmx,.csv,.txt,.yaml,.yml">
+    </div>
+    <div class="fields">
+      <div class="f"><span class="cap">source</span><select id="source"><option value="auto">auto detect</option></select></div>
+      <div class="f"><span class="cap">entity (csv without an entity column)</span><input id="entity" placeholder="branch"></div>
+      <div class="f full"><span class="cap">base_url (report link or server)</span><input id="base" placeholder="https://app.powerbi.com/groups/…/reports/…"></div>
+      <div class="f full"><span class="cap">folder (SSRS only)</span><input id="folder" placeholder="Purchasing"></div>
+    </div>
+    <div class="row"><button class="btn" id="send" disabled>Send to the tank</button><span class="muted" id="sendst"></span></div>
+
+    <div class="card" id="card">
+      <span class="cap" id="cSrc"></span>
+      <h4 id="cTitle"></h4>
+      <div class="spec" id="cCounts"></div>
+      <ul class="list" id="cScreens"></ul>
+      <ul class="list" id="cFind"></ul>
+      <div class="row" id="cAct"><button class="btn" id="apply">Apply to the map</button><button class="btn ghost" id="discard">Discard</button><span class="muted" id="cSt"></span></div>
+    </div>
+
+    <details id="catd"><summary>What Rotundra can read</summary><div id="cat"></div></details>
+  </section>
+</main>
+
+<script>
+const FN='https://ozwyadgdiuwfzjsgqfju.supabase.co/functions/v1/rotundra-intake';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let KEY=null, payload=null, current=null;
+
+async function call(method,qs,body){
+  const r=await fetch(FN+(qs||''),{method,headers:{...(KEY?{authorization:'Bearer '+KEY}:{}),'content-type':'application/json'},body:body?JSON.stringify(body):undefined});
+  const j=await r.json().catch(()=>({})); if(!r.ok&&r.status!==422&&r.status!==409) throw new Error(j.error||('http '+r.status)); return {status:r.status,...j};
+}
+
+// key: paste anything that contains it
+function setKey(raw){const m=String(raw||'').match(/rtd_(test|live)_[^\s"',;|]+/); if(!m){$('#kb').className='badge warn';$('#kb').textContent='no rtd_ key in that';return}
+  KEY=m[0]; try{localStorage.setItem('rtd_map_key',KEY)}catch(e){} $('#key').value=''; $('#key').placeholder=KEY.slice(0,14)+'•••••••• (saved)'; refresh();}
+$('#key').addEventListener('paste',()=>setTimeout(()=>setKey($('#key').value),0));
+$('#key').addEventListener('keydown',e=>{if(e.key==='Enter')setKey($('#key').value)});
+$('#key').addEventListener('change',()=>{if($('#key').value.trim())setKey($('#key').value)});
+
+async function refresh(){
+  $('#kb').className='badge';$('#kb').textContent='checking…';
+  try{const r=await call('GET','');
+    $('#kb').className='badge ok';$('#kb').textContent='✓ key works';
+    const [a,b]=r.ready.split('/'); $('#score').innerHTML=`${a}<small>/${b}</small>`;
+    $('#next').innerHTML='<span class="cap">next</span><br><b>'+esc(r.next)+'</b>';
+    $('#items').innerHTML=r.items.map(i=>`<div class="it"><span class="dot ${i.status}"></span><span class="k">${esc(i.item)}</span><span class="v">${esc(i.now)}</span>${i.do?`<span class="d">${esc(i.do)}</span>`:''}</div>`).join('');
+    $('#tank').innerHTML=(r.intake||[]).length?r.intake.map(t=>`<div class="t" data-id="${t.id}"><span class="mono">#${t.id}</span><span>${esc(t.name||t.source)} <span class="muted">· ${esc(t.source)} · ${(t.bytes/1024).toFixed(0)} KB</span></span><span class="chip ${t.status}">${esc(t.status.replace('_',' '))}</span></div>`).join(''):'<div class="muted">empty</div>';
+    $('#send').disabled=!payload;
+  }catch(e){$('#kb').className='badge warn';$('#kb').textContent=e.message.includes('scope')?'this key has no map scope':e.message;}
+}
+$('#tank').addEventListener('click',async e=>{const t=e.target.closest('.t'); if(!t) return; const r=await call('GET','?id='+t.dataset.id); show(r);});
+
+// catalog (no key needed)
+fetch(FN+'?view=catalog').then(r=>r.json()).then(j=>{
+  $('#source').innerHTML+=j.sources.filter(s=>!s.status.startsWith('planned')&&s.source!=='p21').map(s=>`<option value="${s.source}">${s.source}</option>`).join('');
+  $('#cat').innerHTML=j.sources.map(s=>`<div class="cat"><span class="s">${esc(s.source)}<br><span class="muted">${esc(s.category)}</span></span><span class="st ${s.status.startsWith('planned')?'planned':''}">${esc(s.status)}</span><span>${esc(s.send)}</span>${s.how?`<span class="h">${esc(s.how)}</span>`:''}</div>`).join('');
+}).catch(()=>{$('#cat').innerHTML='<div class="muted">intake function not reachable yet</div>'});
+
+// file reading: .pbit and .twbx are zips; pull out the part Rotundra reads
+async function readFile(f){
+  const n=f.name.toLowerCase();
+  if(n.endsWith('.pbit')||n.endsWith('.twbx')){
+    const zip=await JSZip.loadAsync(f);
+    if(n.endsWith('.pbit')){const part=zip.file('DataModelSchema'); if(!part) throw new Error('no DataModelSchema in this .pbit');
+      const buf=await part.async('uint8array'); let t=new TextDecoder('utf-16le').decode(buf).replace(/^﻿/,''); return {text:t,source:'powerbi',name:f.name.replace(/\.pbit$/i,'')};}
+    const twb=Object.keys(zip.files).find(k=>k.toLowerCase().endsWith('.twb')); if(!twb) throw new Error('no .twb inside this .twbx');
+    return {text:await zip.file(twb).async('string'),source:'tableau',name:f.name.replace(/\.twbx$/i,'')};
+  }
+  if(n.endsWith('.pbix')) throw new Error('.pbix is compressed. In Power BI Desktop: File > Export > Power BI template (.pbit), then drop that.');
+  return {text:await f.text(),source:null,name:f.name};
+}
+async function pick(f){ $('#sendst').textContent='';
+  try{payload=await readFile(f); $('#fname').textContent=f.name+' · '+(payload.text.length/1024).toFixed(0)+' KB'; if(payload.source) $('#source').value=payload.source; $('#send').disabled=!KEY;}
+  catch(e){payload=null;$('#fname').textContent='';$('#sendst').textContent=e.message;$('#send').disabled=true;}}
+const drop=$('#drop');
+drop.addEventListener('click',()=>$('#file').click());
+$('#file').addEventListener('change',e=>e.target.files[0]&&pick(e.target.files[0]));
+drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});
+drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
+drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');e.dataTransfer.files[0]&&pick(e.dataTransfer.files[0])});
+
+$('#send').addEventListener('click',async()=>{
+  if(!payload||!KEY) return; $('#send').disabled=true; $('#sendst').textContent='sending…';
+  try{const r=await call('POST','',{source:$('#source').value,name:payload.name,content:payload.text,base_url:$('#base').value.trim()||undefined,folder:$('#folder').value.trim()||undefined,entity:$('#entity').value.trim()||undefined});
+    $('#sendst').textContent=r.duplicate?'already in the tank':(r.error?r.error:'received'); if(!r.error) show(r); refresh();}
+  catch(e){$('#sendst').textContent=e.message;} finally{$('#send').disabled=false;}
+});
+
+function show(r){
+  current=r; $('#card').classList.add('on');
+  $('#cSrc').textContent=`#${r.id} · ${r.source} · ${r.status}`;
+  const s=r.summary||{}; const screens=s.screens||[];
+  $('#cTitle').textContent=screens.length?`${screens.length} screen${screens.length>1?'s':''} ready to add.`:(r.proposal?'Dictionary ready to add.':'Kept as reference.');
+  const counts=s.counts||{}; $('#cCounts').innerHTML=Object.entries(counts).map(([k,v])=>`<div><span class="cap">${esc(k.replace('_',' '))}</span><span>${v}</span></div>`).join('');
+  $('#cScreens').innerHTML=screens.slice(0,12).map(x=>`<li><b>${esc(x.id)}</b> · ${esc(x.name)}${x.params?.length?' · needs '+esc(x.params.join(', ')):''}</li>`).join('')+(screens.length>12?`<li>+ ${screens.length-12} more</li>`:'')+
+    (s.entities||[]).slice(0,8).map(e=>`<li>${esc(e.entity)} lives in <b>${esc(e.table)}</b>${e.id_col?' · id '+esc(e.id_col):''}${e.name_col?' · name '+esc(e.name_col):''}</li>`).join('');
+  $('#cFind').innerHTML=(r.findings||[]).map(f=>`<li class="find">${esc(f)}</li>`).join('');
+  const can=!!r.proposal&&r.status!=='applied'&&r.status!=='discarded';
+  $('#apply').style.display=can?'':'none'; $('#discard').style.display=r.status==='applied'||r.status==='discarded'?'none':''; $('#cSt').textContent=r.status==='applied'?'applied · new screens sit under role "reports" until you grant it':'';
+}
+$('#apply').addEventListener('click',async()=>{ if(!current) return; $('#cSt').textContent='applying…';
+  const r=await call('POST','',{apply:current.id});
+  $('#cSt').textContent=r.ok?'applied'+(r.notes?.length?' · '+r.notes.join(' · '):''):'not applied: '+(r.errors||[r.error]).join(' · ');
+  if(r.ok) $('#apply').style.display='none'; refresh();});
+$('#discard').addEventListener('click',async()=>{ if(!current) return; await call('POST','',{discard:current.id}); $('#card').classList.remove('on'); refresh();});
+
+try{const k=localStorage.getItem('rtd_map_key'); if(k&&/^rtd_/.test(k)){KEY=k;$('#key').placeholder=k.slice(0,14)+'•••••••• (saved)';refresh();}}catch(e){}
+</script>
+</body>
+</html>
