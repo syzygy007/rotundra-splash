@@ -166,9 +166,10 @@
         <div class="code-line"><span class="indent" aria-hidden="true"></span><label for="access-systems">systems<span aria-hidden="true">:</span></label><span class="string"><input id="access-systems" name="systems" placeholder="Software you run" aria-label="Software you run (optional)" maxlength="200"></span></div>
         <div class="code-line" aria-hidden="true"><span class="punctuation">};</span></div>
       </div>
+      <input name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
       <div class="editor-bottom">
         <div class="editor-actions"><p class="hint">Tab to the next line.<br>Phone, role and systems are optional.</p><button class="cta" type="submit">Request access<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button></div>
-        <p class="delivery-note">Opens an email draft to build@rotundra.io.<br>Send it to complete your request.</p>
+        <p class="delivery-note">Sends your request straight to the Rotundra team.<br>We reply from build@rotundra.io.</p>
         <p class="message" id="access-message" role="status"></p>
       </div>
     </form>
@@ -193,21 +194,44 @@
       document.body.style.overflow = '';
       accessTrigger.focus();
     });
-    accessForm.addEventListener('submit', event => {
+    const ACCESS_ENDPOINT = 'https://ozwyadgdiuwfzjsgqfju.supabase.co/functions/v1/access-request';
+    let accessBusy = false;
+    accessForm.addEventListener('submit', async event => {
       event.preventDefault();
+      if (accessBusy) return;
       for (const input of accessForm.querySelectorAll('input')) input.value = input.value.trim();
       if (!accessForm.reportValidity()) return;
       const data = new FormData(accessForm);
+      const submit = accessForm.querySelector('button[type=submit]');
+      const show = html => { accessMessage.innerHTML = html; accessMessage.scrollIntoView({ block:'nearest', behavior:'smooth' }); };
+      accessBusy = true;
+      submit.disabled = true;
+      submit.firstChild.textContent = 'Sending';
+      show('<span class="prompt">&gt;</span> request.send()<br><span class="dim">// sending</span>');
+      let status = 0;
+      try {
+        const response = await fetch(ACCESS_ENDPOINT, { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(Object.fromEntries(data)) });
+        status = response.status;
+      } catch (error) { status = 0; }
+      if (status === 200) {
+        show('<span class="prompt">&gt;</span> request.send()<br><span class="ok">\u2713 200 OK</span> <span class="dim">\u00b7 request received</span><br><span class="dim">// we will reply from build@rotundra.io</span>');
+        submit.firstChild.textContent = 'Request received';
+        submit.classList.add('sent');
+        return;
+      }
+      accessBusy = false;
+      submit.disabled = false;
+      submit.firstChild.textContent = 'Request access';
+      if (status === 422) { show('<span class="prompt">&gt;</span> request.send()<br><span class="dim">422 \u00b7 check name, email and company, then try again</span>'); return; }
+      if (status === 429) { show('<span class="prompt">&gt;</span> request.send()<br><span class="dim">429 \u00b7 too many requests from this network. Email build@rotundra.io</span>'); return; }
       const body = ['I would like to request early access to Rotundra.', '',
         'Name: ' + data.get('name'), 'Email: ' + data.get('email'),
         'Company: ' + data.get('company'), 'Phone: ' + (data.get('phone') || 'Not provided'),
         'Role: ' + (data.get('role') || 'Not provided'), 'Systems: ' + (data.get('systems') || 'Not provided')].join('\n');
       window.location.href = 'mailto:build@rotundra.io?subject=' + encodeURIComponent('Rotundra early access') + '&body=' + encodeURIComponent(body);
-      accessMessage.innerHTML = '<span class="prompt">&gt;</span> request.send()<br><span class="ok">\u2713 202 ACCEPTED</span> <span class="dim">\u00b7 draft opened in your mail app</span><br><span class="dim">// press send there to complete. No draft? Email build@rotundra.io</span>';
-      const submit = accessForm.querySelector('button[type=submit]');
+      show('<span class="prompt">&gt;</span> request.send()<br><span class="ok">\u2713 202 ACCEPTED</span> <span class="dim">\u00b7 draft opened in your mail app</span><br><span class="dim">// press send there to complete. No draft? Email build@rotundra.io</span>');
       submit.firstChild.textContent = 'Draft opened';
       submit.classList.add('sent');
-      accessMessage.scrollIntoView({ block:'nearest', behavior:'smooth' });
     });
   </script>
 </body>
