@@ -93,7 +93,7 @@
     .editor-intro h2 { font-size:clamp(30px,5.4vw,46px); font-weight:600; letter-spacing:-.045em; line-height:1.08; margin:0 0 14px; }
     .editor-intro p { margin:0; font-size:19px; line-height:1.5; color:#a3a0ad; }
     .code { counter-reset:line; padding:6px 28px 30px 34px; font:20px/1.5 var(--mono); }
-    .code-line { display:flex; align-items:center; min-height:48px; padding-right:14px; border-left:3px solid transparent; }
+    .code-line { display:flex; align-items:center; min-height:44px; padding-right:14px; border-left:3px solid transparent; }
     .code-line::before { counter-increment:line; content:counter(line); align-self:stretch; display:flex; align-items:center; justify-content:center; flex:0 0 56px; margin-right:36px; border-right:1px solid #26262c; color:#77727f; font-size:18px; }
     .code-line:focus-within { background:#9d86ff17; border-left-color:#ad97fa; }
     .code-line:focus-within::before { color:#c9c6d2; }
@@ -155,14 +155,16 @@
     <form id="access-form">
       <div class="code">
         <div class="code-line" aria-hidden="true"><span><span class="keyword">const</span> request <span class="punctuation">= {</span></span></div>
-        <div class="code-line"><span class="indent" aria-hidden="true"></span><label for="access-name">name<span aria-hidden="true">:</span></label><span class="string"><span aria-hidden="true">&quot;</span><input id="access-name" name="name" autocomplete="name" placeholder="Your name" required maxlength="120"><span aria-hidden="true">&quot;</span></span><span class="punctuation" aria-hidden="true">,</span></div>
-        <div class="code-line"><span class="indent" aria-hidden="true"></span><label for="access-email">email<span aria-hidden="true">:</span></label><span class="string"><span aria-hidden="true">&quot;</span><input id="access-email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required maxlength="254" spellcheck="false" autocapitalize="none"><span aria-hidden="true">&quot;</span></span><span class="punctuation" aria-hidden="true">,</span></div>
-        <div class="code-line"><span class="indent" aria-hidden="true"></span><label for="access-company">company<span aria-hidden="true">:</span></label><span class="string"><span aria-hidden="true">&quot;</span><input id="access-company" name="company" autocomplete="organization" placeholder="Your company" required maxlength="160"><span aria-hidden="true">&quot;</span></span><span class="punctuation" aria-hidden="true">,</span></div>
-        <div class="code-line"><span class="indent" aria-hidden="true"></span><label for="access-phone">phone<span aria-hidden="true">:</span></label><span class="string"><span aria-hidden="true">&quot;</span><input id="access-phone" name="phone" type="tel" autocomplete="tel" placeholder="Optional" aria-label="Phone (optional)" maxlength="50"><span aria-hidden="true">&quot;</span></span></div>
+        <div class="code-line"><span class="indent" aria-hidden="true"></span><label for="access-name">name<span aria-hidden="true">:</span></label><span class="string"><input id="access-name" name="name" autocomplete="name" placeholder="Your name" required maxlength="120"></span><span class="punctuation" aria-hidden="true">,</span></div>
+        <div class="code-line"><span class="indent" aria-hidden="true"></span><label for="access-email">email<span aria-hidden="true">:</span></label><span class="string"><input id="access-email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required maxlength="254" spellcheck="false" autocapitalize="none"></span><span class="punctuation" aria-hidden="true">,</span></div>
+        <div class="code-line"><span class="indent" aria-hidden="true"></span><label for="access-company">company<span aria-hidden="true">:</span></label><span class="string"><input id="access-company" name="company" autocomplete="organization" placeholder="Your company" required maxlength="160"></span><span class="punctuation" aria-hidden="true">,</span></div>
+        <div class="code-line"><span class="indent" aria-hidden="true"></span><label for="access-phone">phone<span aria-hidden="true">:</span></label><span class="string"><input id="access-phone" name="phone" type="tel" autocomplete="tel" placeholder="Optional" aria-label="Phone (optional)" maxlength="50"></span><span class="punctuation" aria-hidden="true">,</span></div>
+        <div class="code-line"><span class="indent" aria-hidden="true"></span><label for="access-role">role<span aria-hidden="true">:</span></label><span class="string"><input id="access-role" name="role" autocomplete="organization-title" placeholder="Optional" aria-label="Role or title (optional)" maxlength="120"></span><span class="punctuation" aria-hidden="true">,</span></div>
+        <div class="code-line"><span class="indent" aria-hidden="true"></span><label for="access-systems">systems<span aria-hidden="true">:</span></label><span class="string"><input id="access-systems" name="systems" placeholder="Software you run" aria-label="Software you run (optional)" maxlength="200"></span></div>
         <div class="code-line" aria-hidden="true"><span class="punctuation">};</span></div>
       </div>
       <div class="editor-bottom">
-        <div class="editor-actions"><p class="hint">Tab to the next line.<br>Phone is optional.</p><button class="cta" type="submit">Request access<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button></div>
+        <div class="editor-actions"><p class="hint">Tab to the next line.<br>Phone, role and systems are optional.</p><button class="cta" type="submit">Request access<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button></div>
         <p class="delivery-note">Opens an email draft to build@rotundra.io.<br>Send it to complete your request.</p>
         <p class="message" id="access-message" role="status"></p>
       </div>
@@ -195,7 +197,8 @@
       const data = new FormData(accessForm);
       const body = ['I would like to request early access to Rotundra.', '',
         'Name: ' + data.get('name'), 'Email: ' + data.get('email'),
-        'Company: ' + data.get('company'), 'Phone: ' + (data.get('phone') || 'Not provided')].join('\n');
+        'Company: ' + data.get('company'), 'Phone: ' + (data.get('phone') || 'Not provided'),
+        'Role: ' + (data.get('role') || 'Not provided'), 'Systems: ' + (data.get('systems') || 'Not provided')].join('\n');
       window.location.href = 'mailto:build@rotundra.io?subject=' + encodeURIComponent('Rotundra early access') + '&body=' + encodeURIComponent(body);
       accessMessage.textContent = 'Please send the draft in your email app to complete your request. If it did not open, email build@rotundra.io with these details.';
     });
