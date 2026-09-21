@@ -113,6 +113,9 @@
     .editor-actions .cta { min-height:53px; padding:0 22px; gap:14px; font-size:17px; border-radius:6px; }
     .delivery-note { margin:16px 0 0; color:#9b96a5; font:13px/1.6 var(--mono); text-align:right; }
     .message { color:#9fd68a; font-size:14px; line-height:1.6; margin:16px 0 0; }
+    .message { font:14px/1.75 var(--mono); color:#ebe9f0; padding:14px 16px; border:1px solid #26262c; border-left:3px solid #9fd68a; border-radius:6px; background:#9fd68a0d; animation:appear .25s ease-out; }
+    .message .prompt { color:#b993f5; } .message .ok { color:#9fd68a; font-weight:500; } .message .dim { color:#8f8b99; }
+    .cta.sent { background:#9fd68a; border-color:#9fd68a; }
     .message:empty { display:none; }
     @media (max-width:700px) {
       .editor-intro { padding:28px 22px 14px; }
@@ -200,7 +203,11 @@
         'Company: ' + data.get('company'), 'Phone: ' + (data.get('phone') || 'Not provided'),
         'Role: ' + (data.get('role') || 'Not provided'), 'Systems: ' + (data.get('systems') || 'Not provided')].join('\n');
       window.location.href = 'mailto:build@rotundra.io?subject=' + encodeURIComponent('Rotundra early access') + '&body=' + encodeURIComponent(body);
-      accessMessage.textContent = 'Please send the draft in your email app to complete your request. If it did not open, email build@rotundra.io with these details.';
+      accessMessage.innerHTML = '<span class="prompt">&gt;</span> request.send()<br><span class="ok">\u2713 202 ACCEPTED</span> <span class="dim">\u00b7 draft opened in your mail app</span><br><span class="dim">// press send there to complete. No draft? Email build@rotundra.io</span>';
+      const submit = accessForm.querySelector('button[type=submit]');
+      submit.firstChild.textContent = 'Draft opened';
+      submit.classList.add('sent');
+      accessMessage.scrollIntoView({ block:'nearest', behavior:'smooth' });
     });
   </script>
 </body>
